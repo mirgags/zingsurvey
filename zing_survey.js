@@ -6,9 +6,19 @@ if (Meteor.isClient) {
       'qValue': {
         'peter': 'Peter',
         'valentine': 'Valentine',
-        'ender': 'Ender'
+        'ender': 'Ender',
+        'dad': 'Their stupid dumb dad',
+        'mom': 'Their lame mom'
         }
-      } 
+      },{
+        'qName': 'favoriteBassDrop',
+        'qText': 'What is your favorite bass drop',
+        'qValue': {
+          'brr': 'Brrrrrrrr',
+          'bzz': 'Bzzzzzzzz',
+          'brz': 'Brrrrzzzz'
+        }
+      }
     ]
   };
 
@@ -26,8 +36,9 @@ if (Meteor.isClient) {
   });
 
   Template.question.form = function () {
+    var rtn;
     for (i=0; i < questionList['questions'].length; i++) {
-      rtn = '<h2>'+questionList['questions'][i]['qText']+'</h2>';
+      rtn += '<h2>'+questionList['questions'][i]['qText']+'</h2>';
       for (key in questionList['questions'][i]['qValue']) {
         rtn += '<input type="radio" name="'+
         questionList['questions'][i]['qName']+
@@ -35,12 +46,28 @@ if (Meteor.isClient) {
         questionList['questions'][i]['qValue'][key]+'<br>';
       }
     }
+    rtn += '<input type="button" class="submit_button" value="submit">';
     return new Handlebars.SafeString(rtn);
-  }  
+  };
+
+  Template.question.events({
+    'click .submit_button': function (event) {
+      var selection = "None selected";
+      theFields = document.getElementsByTagName("input");
+      console.log(theFields.length);
+      for (i=0; i < theFields.length; i++) {
+        console.log(theFields[i].type);
+        if (theFields[i].type == "radio" && theFields[i].checked) {
+          console.log(theFields[i].value);
+        }
+      }
+    }
+  });
 };
 
 if (Meteor.isServer) {
   Meteor.startup(function () {
-    // code to run on server at startup
-  });
-}
+  // code to run on server at startup
+
+  }
+)};
